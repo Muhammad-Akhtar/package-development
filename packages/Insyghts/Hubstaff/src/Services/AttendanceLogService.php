@@ -26,7 +26,8 @@ class AttendanceLogService
         ];
 
         $data['attendance_date'] = gmdate('Y-m-d', strtotime($data['attendance_date']));
-        $data['attendance_status_date'] = gmdate('Y-m-d h:i:s', strtotime($data['attendance_status_date']));
+        $data['attendance_status_date'] = gmdate('Y-m-d h:i:s A', strtotime($data['attendance_status_date']));
+        
         // $data = [
         //     'user_id' => 1,
         //     'session_token_id' => '1',
@@ -44,7 +45,7 @@ class AttendanceLogService
             // two consecutive check-ins or check-outs not allowed
             $previousEntry = $this->attendanceLog->getPreviousEntry($data, $response);
             $isvalid = $this->validateConsecutiveEntry($data, $previousEntry, $response);
-            
+
             if($isvalid){
                 $insertedRecord = $this->attendanceLog->saveRecord($data);
                 if($insertedRecord){

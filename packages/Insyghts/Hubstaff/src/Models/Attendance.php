@@ -20,7 +20,17 @@ class Attendance extends Model
         return $result;
     }
 
-    public function getAttendanceById($id){
-        return $this->find($id);
+    public function saveAttendance($attendance)
+    {
+        $inserted=false;
+         
+        $inserted = $attendance->save();
+
+        return $inserted;
+    }
+
+    public function getByDateAndUser($user_id, $attendance_date){
+        return Attendance::where('user_id', '=', $user_id)
+                    ->where('attendance_date', $attendance_date)->first();
     }
 }

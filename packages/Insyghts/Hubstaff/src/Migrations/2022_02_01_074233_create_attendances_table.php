@@ -23,8 +23,8 @@ class CreateAttendancesTable extends Migration
             $table->bigInteger('hours');
             $table->enum('status', ['A', 'I']);
             $table->bigInteger('created_by');
-            $table->bigInteger('last_modified_by');
-            $table->bigInteger('deleted_by');
+            $table->bigInteger('last_modified_by')->nullable();
+            $table->bigInteger('deleted_by')->nullable();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->default(DB::raw('NULL ON UPDATE CURRENT_TIMESTAMP'))->nullable();
             $table->softDeletes();

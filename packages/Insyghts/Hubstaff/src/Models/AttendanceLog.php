@@ -32,6 +32,7 @@ class AttendanceLog extends Model
         }
         return $inserted;
     }
+    
     public function getUserAttendanceLogsByDate($user_id, $attendance_date)
     {
         $checkInLogs = AttendanceLog::where('user_id','=', $user_id)
