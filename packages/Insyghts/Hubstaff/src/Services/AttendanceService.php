@@ -87,13 +87,13 @@ class AttendanceService
             }
             $inserted = $this->attendance->saveAttendance($attendance);
             if($inserted){
-                
+                $response['success'] = 1;
+                $response['data'] = "Attendance saved successfully!";
             }
         }
         catch (Exception $e) {
-            $response['data'] = $e->getMessage();
+            
         } finally {
-            echo '<pre>'; print_r($response); exit;
             return $response;
         }
         

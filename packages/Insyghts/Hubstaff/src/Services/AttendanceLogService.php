@@ -26,7 +26,8 @@ class AttendanceLogService
         ];
 
         $data['attendance_date'] = gmdate('Y-m-d', strtotime($data['attendance_date']));
-        $data['attendance_status_date'] = gmdate('Y-m-d h:i:s A', strtotime($data['attendance_status_date']));
+        $data['attendance_status_date'] = gmdate('Y-m-d G:i:s', strtotime($data['attendance_status_date']));
+
         
         // $data = [
         //     'user_id' => 1,
@@ -54,7 +55,7 @@ class AttendanceLogService
                 }
             }
         } catch (Exception $e) {
-            $response['data'] = $e->getMessage();
+            
         } finally {
             return $response;
         }

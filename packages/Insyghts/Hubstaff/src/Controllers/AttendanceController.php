@@ -39,8 +39,9 @@ class AttendanceController extends Controller
         if($result['success']){
             $attLog = $result['data'];
             $result = $this->attendanceService->saveAttendance($attLog);
+            
         }else{
-            echo '<pre>'; print_r(['message' => $result['data']]); exit;
+            return response()->json(['success' => false, 'message' => $result['data']]); exit;
         }
     }
 }
