@@ -55,7 +55,10 @@ class AttendanceLogService
                 }
             }
         } catch (Exception $e) {
-            
+            $show = get_class($e) == 'Illuminate\Database\QueryException' ? false : true;
+            if($show){
+                $response['data'] = $e->getMessage();
+            }
         } finally {
             return $response;
         }

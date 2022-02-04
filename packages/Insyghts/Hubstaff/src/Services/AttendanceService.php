@@ -2,11 +2,10 @@
 
 namespace Insyghts\Hubstaff\Services;
 
-use App\Models\User;
-use DateTime;
 use Exception;
 use Insyghts\Hubstaff\Models\Attendance;
 use Insyghts\Hubstaff\Models\AttendanceLog;
+
 
 class AttendanceService
 {
@@ -21,21 +20,19 @@ class AttendanceService
     {
         $response = [
             'success' => 0,
-            'data'    => "There is some error while processing your request",
+            'data'    => "There is some error",
         ];
         try{
-            $data = $this->attendance->getAllAttendances($filters);     
-            if($data && count($data) > 0){
+            $data = $this->attendance->getAttendanceList($filters);     
+            if(count($data) > 0){
                 $response['success'] = 1;
-                $response['data']    = $data;
-            }else{
-                $response['data'] = "No records found in database";
+                $response['data']    = $data->toArray();
             }
         }catch (Exception $e) {
-			$response = [
-				'success' => 0,
-				'data' => $e->getMessage(),
-			];
+			$show = get_class($e) == 'Illuminate\Database\QueryException' ? false : true;
+            if($show){
+                $response['data'] = $data['data'];
+            }
 		} finally {			
 			return $response;
 		}	
@@ -61,9 +58,9 @@ class AttendanceService
                 'hours' => $hours,
                 'status' => 'A',
                 // user who created it
-                'created_by' => 1,
+                'created_by' => $data->created_by,
                 // user who modify this row
-                'last_modified_by' => 1,
+                'last_modified_by' => $data->last_modified_by,
             ];
             $attendance = $this->attendance->getByDateAndUser($data->user_id, $attendanceDate);
             if($attendance == null){
@@ -88,11 +85,14 @@ class AttendanceService
             $inserted = $this->attendance->saveAttendance($attendance);
             if($inserted){
                 $response['success'] = 1;
-                $response['data'] = "Attendance saved successfully!";
+                $response['data'] = $attendance;
             }
         }
         catch (Exception $e) {
-            
+            $show = get_class($e) == 'Illuminate\Database\QueryException' ? false : true;
+            if($show){
+                $response['data'] = $e->getMessage();
+            }
         } finally {
             return $response;
         }
@@ -116,17 +116,94 @@ class AttendanceService
                 $cin=strtotime($checkinLogs[$i]['attendance_status_date']);
                 $cout=strtotime($checkoutLogs[$i]['attendance_status_date']);
                 $d = abs($cout - $cin);
-                $diffHours= $d/(60 * 60);
+                $diffHours= round($d/(60 * 60));
                 $hours += $diffHours;
             } 
         }
         return $hours;
     }
 
+    
     public function getAttendanceById($id)
     {
-        return "Attendance services returned";
+        $response = ['success' => 0, 'data' => 'There is some error'];
+        try{
+            $attendance = $this->attendance->getAttendanceById($id);
+            if($attendance){
+                $response['success'] = 1;
+                $response['data'] = $attendance;
+            }
+        }catch(Exception $e){
+            $show = get_class($e) == 'Illuminate\Database\QueryException' ? false : true;
+            if($show){
+                $response['data'] = $e->getMessage();
+            }
+        }finally{
+            return $response;
+        }
     }
+
+    public function getAttendanceByUser($user_id)
+    {
+        $response = ['success' => 0, 'data' => "Something went wrong"];
+        try{
+            $attendances = $this->attendance->getAttendanceByUser($user_id);
+            if(count($attendances)){
+                $response['success'] = 1;
+                $response['data'] = $attendances->toArray();
+            }
+        }catch(Exception $e){
+            $show = get_class($e) == 'Illuminate\Database\QueryException' ? false : true;
+            if($show){
+                $response['data'] = $e->getMessage();
+            }
+        }finally{
+            return $response;
+        }
+    }
+
+    public function getAttendanceByDate($attendance_date)
+    {
+        $response = ['success' => 0, 'data' => "Something went wrong"];
+        try{
+            $attendances = $this->attendance->getAttendanceByDate($attendance_date);
+            if(count($attendances)){
+                $response['success'] = 1;
+                $response['data'] = $attendances->toArray();
+            }
+        }catch(Exception $e){
+            $show = get_class($e) == 'Illuminate\Database\QueryException' ? false : true;
+            if($show){
+                $response['data'] = $e->getMessage();
+            }   
+        }finally{
+            return $response;
+        }
+    }
+
+    public function getAttendanceByUserAndDate($user_id, $attendance_date)
+    {
+        $response = [
+            'success' => 0,
+            'data'    => "Something went wrong"
+        ];
+
+        try{
+            $attendance = $this->attendance->getAttendanceByUserAndDate($user_id, $attendance_date);
+            if($attendance){
+                $response['success'] = 1;
+                $response['data'] = $attendance;
+            }
+        }catch(Exception $e){
+            $show = get_class($e) == "Illuminate\Database\QueryException" ? false : true;
+            if($show){
+                $response['data'] = $e->getMessage();
+            }
+        }finally{
+            return $response;
+        }
+    }
+
 
     public function updateAttendance($update, $id)
     {

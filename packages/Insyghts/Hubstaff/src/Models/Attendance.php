@@ -9,11 +9,11 @@ class Attendance extends Model
 {
     use HasFactory;
 
-    public function getAllAttendances($filter)
+    public function getAttendanceList($filter)
     {
         $queryObj = $this;
         $limit = !empty($filter['limit']) ? $filter['limit'] : 30;
-        if(isset($filter['any_filter'])){
+        if(count($filter)){
             // query with where clause
         }
         $result = $queryObj->orderBy('id', 'DESC')->paginate($limit);
@@ -29,7 +29,23 @@ class Attendance extends Model
         return $inserted;
     }
 
-    public function getByDateAndUser($user_id, $attendance_date){
+    public function getAttendanceById($id)
+    {
+        return Attendance::find($id);
+    }
+
+    public function getAttendanceByUser($user_id)
+    {
+        return Attendance::where('user_id', '=', ((int)$user_id))->get();
+    }
+
+    public function getAttendanceByDate($attendance_date)
+    {
+        return Attendance::where('attendance_date', '=', gmdate('Y-m-d', strtotime($attendance_date)))
+                ->get();
+    }
+
+    public function getAttendanceByUserAndDate($user_id, $attendance_date){
         return Attendance::where('user_id', '=', $user_id)
                     ->where('attendance_date', $attendance_date)->first();
     }

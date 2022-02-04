@@ -9,3 +9,7 @@ Route::get('hubstaff', function(){
 Route::post('hubstaff/attendances/filter', [AttendanceController::class, 'index']);
 Route::get('hubstaff/attendances', [AttendanceController::class, 'index']);
 Route::post('hubstaff/attendance/save', [AttendanceController::class, 'store']);
+Route::get('hubstaff/attendance/{id}', [AttendanceController::class, 'show']);
+Route::post('hubstaff/user-attendance', [AttendanceController::class, 'getAttendanceByUserAndDate']);
+Route::get('hubstaff/attendance/user/{id}', [AttendanceController::class, 'getAttendanceByUser']);
+Route::get('hubstaff/attendance/date/{date}', [AttendanceController::class, 'getAttendanceByDate']);
