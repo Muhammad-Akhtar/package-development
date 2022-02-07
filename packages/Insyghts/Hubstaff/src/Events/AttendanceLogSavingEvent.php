@@ -9,20 +9,21 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Insyghts\Hubstaff\Models\AttendanceLog;
 
-class AttendanceLogCreated
+class AttendanceLogSavingEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
+
     public $attendanceLog;
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(AttendanceLog $attendanceLog)
+    public function __construct($attendanceLog)
     {
-        $this->attendanceLog = $attendanceLog;      
+        // This is our input data
+        $this->attendanceLog = $attendanceLog;
     }
 
     /**

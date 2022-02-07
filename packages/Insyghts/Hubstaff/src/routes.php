@@ -1,5 +1,6 @@
 <?php
 
+use Insyghts\Hubstaff\Controllers\ActivitiesController;
 use Insyghts\Hubstaff\Controllers\AttendanceController;
 
 Route::get('hubstaff', function(){
@@ -13,3 +14,4 @@ Route::get('hubstaff/attendance/{id}', [AttendanceController::class, 'show']);
 Route::post('hubstaff/user-attendance', [AttendanceController::class, 'getAttendanceByUserAndDate']);
 Route::get('hubstaff/attendance/user/{id}', [AttendanceController::class, 'getAttendanceByUser']);
 Route::get('hubstaff/attendance/date/{date}', [AttendanceController::class, 'getAttendanceByDate']);
+Route::post('hubstaff/activity-log/save', [ActivitiesController::class, 'store']);

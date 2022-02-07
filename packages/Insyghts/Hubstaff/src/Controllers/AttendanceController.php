@@ -3,7 +3,6 @@
 namespace Insyghts\Hubstaff\Controllers;
 
 use App\Http\Controllers\Controller;
-use GrahamCampbell\ResultType\Success;
 use Illuminate\Http\Request;
 use Insyghts\Hubstaff\Services\AttendanceLogService;
 use Insyghts\Hubstaff\Services\AttendanceService;

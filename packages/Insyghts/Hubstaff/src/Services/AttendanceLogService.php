@@ -45,14 +45,14 @@ class AttendanceLogService
         try {
             // check if already checkin or checkout
             // two consecutive check-ins or check-outs not allowed
-            $previousEntry = $this->attendanceLog->getPreviousEntry($data, $response);
+            $previousEntry = $this->attendanceLog->getPreviousEntry($data);
             $isvalid = $this->validateConsecutiveEntry($data, $previousEntry, $response);
 
             if($isvalid){
                 $insertedRecord = $this->attendanceLog->saveRecord($data);
                 if($insertedRecord){
                     // Trigger event to create activity log
-                    event(new AttendanceLogCreated($insertedRecord));
+                    // event(new AttendanceUpdating($insertedRecord));
                     $response['success'] = 1;
                     $response['data'] = $insertedRecord;
                 }

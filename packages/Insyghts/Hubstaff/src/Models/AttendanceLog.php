@@ -12,7 +12,7 @@ class AttendanceLog extends Model
     use HasFactory, SoftDeletes;
     protected $table = 'attendance_logs';
   
-    public function getPreviousEntry($entry, &$response)
+    public function getPreviousEntry($entry)
     {
         $previousEntry = AttendanceLog::where('user_id', '=', ((int)$entry['user_id']))
             ->orderBy('id', 'DESC')->first();
