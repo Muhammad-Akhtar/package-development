@@ -62,7 +62,7 @@ class AttendanceService
                 // user who modify this row
                 'last_modified_by' => $data->last_modified_by,
             ];
-            $attendance = $this->attendance->getByDateAndUser($data->user_id, $attendanceDate);
+            $attendance = $this->attendance->getAttendanceByUserAndDate($data->user_id, $attendanceDate);
             if($attendance == null){
                 $attendance = new Attendance();
                 // Creation

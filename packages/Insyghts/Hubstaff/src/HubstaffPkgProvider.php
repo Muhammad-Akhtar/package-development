@@ -3,6 +3,7 @@
 namespace Insyghts\Hubstaff;
 
 use Illuminate\Support\ServiceProvider;
+use Insyghts\Hubstaff\Providers\EventServiceProvider;
 
 class HubstaffPkgProvider extends ServiceProvider
 {
@@ -13,7 +14,7 @@ class HubstaffPkgProvider extends ServiceProvider
      */
     public function register()
     {
-            
+        $this->app->register(EventServiceProvider::class);        
     }
 
     /**

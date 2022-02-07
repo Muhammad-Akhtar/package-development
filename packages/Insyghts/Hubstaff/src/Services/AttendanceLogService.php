@@ -4,6 +4,7 @@ namespace Insyghts\Hubstaff\Services;
 
 use Exception;
 use Illuminate\Support\Facades\DB;
+use Insyghts\Hubstaff\Events\AttendanceLogCreated;
 use Insyghts\Hubstaff\Models\Attendance;
 use Insyghts\Hubstaff\Models\AttendanceLog;
 
@@ -50,6 +51,8 @@ class AttendanceLogService
             if($isvalid){
                 $insertedRecord = $this->attendanceLog->saveRecord($data);
                 if($insertedRecord){
+                    // Trigger event to create activity log
+                    event(new AttendanceLogCreated($insertedRecord));
                     $response['success'] = 1;
                     $response['data'] = $insertedRecord;
                 }
