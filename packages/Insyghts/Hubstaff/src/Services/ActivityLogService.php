@@ -58,50 +58,11 @@ class ActivityLogService
         ];
 
         try {
-            // offline case deal with it later
-            // if ($data['time_type'] == 'CI') {
-            //     $newData = [
-            //         'user_id' => $data['user_id'],
-            //         'session_token_id' => $data['session_token_id'],
-            //         'attendance_date' => $data['activity_date'],
-            //         'attendance_status' => 'I',
-            //         'attendance_status_date' => $data['log_from_date'],
-            //         'status' => 'A',
-            //         'created_by' => $data['created_by'],
-            //     ];
-            //     $isCheckIn = $this->validateActivityLogs($newData, $response);
-            //     if($isCheckIn){
-            //         // $result = event(new AttendanceLogSavingEvent($newData));
-            //         $insertedRecord = $this->attendanceLog->saveRecord($newData);
-            //         if($insertedRecord){
-            //             // Update Attendance Table too 
-            //         }
-            //     }
-            // } elseif($data['time_type'] == 'CO') {
-            //     $newData = [
-            //         'user_id' => $data['user_id'],
-            //         'session_token_id' => $data['session_token_id'],
-            //         'attendance_date' => $data['activity_date'],
-            //         'attendance_status' => 'O',
-            //         'attendance_status_date' => $data['log_to_date'],
-            //         'status' => 'A',
-            //         'created_by' => $data['created_by'],
-            //     ];
-            //     $isCheckOut = $this->validateActivityLogs($newData, $response);
-            //     if($isCheckOut){
-            //         // Save to Attendance Log and Update Attendance
-            //         // Better to dispatch an event here
-            //     }
-            // }
-
             $activityLog = $this->actLog->saveRecord($data);
             if($activityLog){
                 $response['success'] = 1;
                 $response['data']  = $activityLog;
             }
-           
-            
-
         } catch (Exception $e) {
             $show = get_class($e) == 'Illuminate\Database\QueryException' ? false : true;
             if ($show) {

@@ -10,13 +10,11 @@ use Insyghts\Hubstaff\Listeners\AttendanceLogSavingListener;
 
 class EventServiceProvider extends ServiceProvider
 {
+    // this is just an example event
     protected $listen = [
-        AttendanceLogCreated::class => [
-            AttendanceLogListener::class
-        ],
-        AttendanceLogSavingEvent::class => [
-            AttendanceLogSavingListener::class
-        ]
+        // AttendanceLogSavingEvent::class => [
+        //     AttendanceLogSavingListener::class
+        // ]
     ];
 
     /**
