@@ -9,4 +9,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class ActivityLog extends Model
 {
     use HasFactory, SoftDeletes;
+
+    public function saveRecord($data)
+    {
+        $inserted = ActivityLog::insert($data);
+        if($inserted){
+            $inserted = ActivityLog::latest()->first();
+        }
+        return $inserted;
+    }
 }

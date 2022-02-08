@@ -5,6 +5,7 @@ namespace Insyghts\Hubstaff\Services;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Insyghts\Hubstaff\Events\AttendanceLogCreated;
+use Insyghts\Hubstaff\Models\ActivityLog;
 use Insyghts\Hubstaff\Models\Attendance;
 use Insyghts\Hubstaff\Models\AttendanceLog;
 
@@ -13,10 +14,12 @@ class AttendanceLogService
 
     function __construct(
         Attendance $attendance,
-        AttendanceLog $attendanceLog
+        AttendanceLog $attendanceLog,
+        ActivityLog $activityLog
     ) {
         $this->attendance = $attendance;
         $this->attendanceLog = $attendanceLog;
+        $this->activityLog = $activityLog;
     }
 
     public function saveAttendanceLog($data)
@@ -29,7 +32,7 @@ class AttendanceLogService
         $data['attendance_date'] = gmdate('Y-m-d', strtotime($data['attendance_date']));
         $data['attendance_status_date'] = gmdate('Y-m-d G:i:s', strtotime($data['attendance_status_date']));
 
-        
+
         // $data = [
         //     'user_id' => 1,
         //     'session_token_id' => '1',
@@ -44,22 +47,38 @@ class AttendanceLogService
 
         try {
             // check if already checkin or checkout
-            // two consecutive check-ins or check-outs not allowed
+            // two consecutive check-ins or check-outs not allowed for a user
             $previousEntry = $this->attendanceLog->getPreviousEntry($data);
             $isvalid = $this->validateConsecutiveEntry($data, $previousEntry, $response);
 
-            if($isvalid){
+            if ($isvalid) {
                 $insertedRecord = $this->attendanceLog->saveRecord($data);
-                if($insertedRecord){
-                    // Trigger event to create activity log
-                    // event(new AttendanceUpdating($insertedRecord));
-                    $response['success'] = 1;
-                    $response['data'] = $insertedRecord;
+                if ($insertedRecord) {
+                    $attendanceLog = $insertedRecord;
+                    $activityData = [
+                        'user_id' => $attendanceLog->user_id,
+                        'session_token_id' => $attendanceLog->session_token_id,
+                        'activity_date' => $attendanceLog->attendance_date,
+                        'log_from_date' => NULL,
+                        'log_to_date' => NULL,
+                        'note'  =>  NULL,
+                        'keyboard_track' => NULL,
+                        'mouse_track'   => NULL,
+                        'time_type' => $attendanceLog->attendance_status == 'I' ? 'CI' : 'CO',
+                        'created_by' => $attendanceLog->created_by,
+                        'last_modified_by' => NULL,
+                        'deleted_by' => NULL,
+                    ];
+                    $result = $this->activityLog->saveRecord($activityData);
+                    if($result){
+                        $response['success'] = 1;
+                        $response['data'] = $insertedRecord;
+                    }
                 }
             }
         } catch (Exception $e) {
             $show = get_class($e) == 'Illuminate\Database\QueryException' ? false : true;
-            if($show){
+            if ($show) {
                 $response['data'] = $e->getMessage();
             }
         } finally {
@@ -82,7 +101,7 @@ class AttendanceLogService
         } else {
             if ((!$previousEntry || $previousEntry == null) && $entry['attendance_status'] == 'O') {
                 $response['data'] = "Please check-in first!";
-            }else{
+            } else {
                 $isvalid = true;
             }
         }

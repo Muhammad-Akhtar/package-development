@@ -28,29 +28,37 @@ class ActivityLogService
             'success' => 0,
             'data' => "There is some error",
         ];
-        $activity_date = gmdate('Y-m-d G:i:s', strtotime($data['activity_date']));
-        $log_from_date = gmdate('Y-m-d G:i:s', strtotime($data['log_from_date']));
-        $log_to_date = gmdate('Y-m-d G:i:s', strtotime($data['log_to_date']));
-        $data['activity_date'] = $activity_date;
-        $data['log_from_date'] = $log_from_date;
-        $dat['log_to_date'] = $log_to_date;
-        // $data = [
-        //     'user_id' => 1,
-        //     'session_token_id' => 1,
-        //     'activity_date' => gmdate('Y-m-d G:i:s', strtotime('2022-02-07')),
-        //     'log_from_date' => gmdate('Y-m-d G:i:s', strtotime('2022-02-07 10:00:00')),
-        //     'log_to_date' => gmdate('Y-m-d G:i:s', strtotime('2022-02-07 18:00:00')),
-        //     'note'  =>  'This is test note',
-        //     'keyboard_track' => 390,
-        //     'mouse_track'   => 1900,
-        //     'time_type' => 'CI',
-        //     'created_by' => 1,
-        //     'last_modified_by' => NULL,
-        //     'deleted_by' => NULL,
-        // ];
+        if($data['activity_date'] != NULL){
+            $activity_date = gmdate('Y-m-d G:i:s', strtotime($data['activity_date']));
+            $data['activity_date'] = $activity_date;
+        }
+        if($data['log_from_date'] != NULL){
+            $log_from_date = gmdate('Y-m-d G:i:s', strtotime($data['log_from_date']));
+            $data['log_from_date'] = $log_from_date;
+        }
+        if($data['log_to_date'] != NULL){
+            $log_to_date = gmdate('Y-m-d G:i:s', strtotime($data['log_to_date']));
+            $data['log_to_date'] = $log_to_date;
+        }
+        
+        $data = [
+            // currently logged-in user will be here
+            'user_id' => $data['user_id'],
+            // currently logged-in user session will be here
+            'session_token_id' => $data['session_token_id'],
+            'activity_date' => $data['activity_date'],
+            'log_from_date' => $data['log_from_date'],
+            'log_to_date' => $data['log_to_date'],
+            'note'  =>  $data['note'],
+            'keyboard_track' => $data['keyboard_track'],
+            'mouse_track'   => $data['mouse_track'],
+            'time_type' => $data['time_type'],
+            // currently logged-in user id here
+            'created_by' => $data['created_by'],
+        ];
 
         try {
-            // In case of offline data deal with it later
+            // offline case deal with it later
             // if ($data['time_type'] == 'CI') {
             //     $newData = [
             //         'user_id' => $data['user_id'],
@@ -85,12 +93,19 @@ class ActivityLogService
             //         // Better to dispatch an event here
             //     }
             // }
+
+            $activityLog = $this->actLog->saveRecord($data);
+            if($activityLog){
+                $response['success'] = 1;
+                $response['data']  = $activityLog;
+            }
+           
             
 
         } catch (Exception $e) {
             $show = get_class($e) == 'Illuminate\Database\QueryException' ? false : true;
             if ($show) {
-                $responsep['data'] = $e->getMessage();
+                $response['data'] = $e->getMessage();
             }
         } finally {
             return $response;
