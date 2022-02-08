@@ -14,8 +14,8 @@ class HubstaffPkgProvider extends ServiceProvider
     public function register()
     {   
         // Registering all controllers 
-        $this->app->make('Insyghts\hubstaff\Controllers\AttendanceController');
-        $this->app->make('Insyghts\hubstaff\Controllers\ActivitiesController');
+        $this->app->make('Insyghts\Hubstaff\Controllers\AttendanceController');
+        $this->app->make('Insyghts\Hubstaff\Controllers\ActivitiesController');
     }
 
     /**
