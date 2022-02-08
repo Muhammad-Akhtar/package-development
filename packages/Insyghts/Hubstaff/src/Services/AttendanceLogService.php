@@ -55,6 +55,7 @@ class AttendanceLogService
                 $insertedRecord = $this->attendanceLog->saveRecord($data);
                 if ($insertedRecord) {
                     $attendanceLog = $insertedRecord;
+                    // now save activity log with type CI or CO
                     $activityData = [
                         'user_id' => $attendanceLog->user_id,
                         'session_token_id' => $attendanceLog->session_token_id,
