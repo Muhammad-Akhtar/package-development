@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3e88bbe67411c9c635e9ad614c6bd02f",
+    "content-hash": "37906f1f6aa14bcdcc4022a9dab55a16",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -925,6 +925,44 @@
                 }
             ],
             "time": "2021-10-06T17:43:30+00:00"
+        },
+        {
+            "name": "insyghts/authentication",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/BabarAslamm/auth.git",
+                "reference": "a00e98ba875ab119b666df16187500485ed93d24"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/BabarAslamm/auth/zipball/a00e98ba875ab119b666df16187500485ed93d24",
+                "reference": "a00e98ba875ab119b666df16187500485ed93d24",
+                "shasum": ""
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Insyghts\\Authentication\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "proprietary"
+            ],
+            "authors": [
+                {
+                    "name": "mac",
+                    "email": "no-reply@gmail.com"
+                }
+            ],
+            "description": "custom authentication",
+            "support": {
+                "issues": "https://github.com/BabarAslamm/auth/issues",
+                "source": "https://github.com/BabarAslamm/auth/tree/main"
+            },
+            "time": "2022-02-09T10:21:36+00:00"
         },
         {
             "name": "laravel/framework",
@@ -7914,7 +7952,8 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "babar/product": 20
+        "babar/product": 20,
+        "insyghts/authentication": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
