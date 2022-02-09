@@ -932,12 +932,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/BabarAslamm/auth.git",
-                "reference": "a00e98ba875ab119b666df16187500485ed93d24"
+                "reference": "7689035aeed25f0c7fb22920616afa1e51f45479"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/BabarAslamm/auth/zipball/a00e98ba875ab119b666df16187500485ed93d24",
-                "reference": "a00e98ba875ab119b666df16187500485ed93d24",
+                "url": "https://api.github.com/repos/BabarAslamm/auth/zipball/7689035aeed25f0c7fb22920616afa1e51f45479",
+                "reference": "7689035aeed25f0c7fb22920616afa1e51f45479",
                 "shasum": ""
             },
             "default-branch": true,
@@ -962,7 +962,7 @@
                 "issues": "https://github.com/BabarAslamm/auth/issues",
                 "source": "https://github.com/BabarAslamm/auth/tree/main"
             },
-            "time": "2022-02-09T10:21:36+00:00"
+            "time": "2022-02-09T10:30:39+00:00"
         },
         {
             "name": "laravel/framework",
